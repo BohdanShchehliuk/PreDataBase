@@ -23,9 +23,6 @@ public class Write {
             bw.newLine();
         }
         bw.close();
-
-        System.out.println("Вітаємо, реєстрація пройшла успішно. " +
-                "Ваш логін: " + enterData.get(1) + " . Ваш пароль: " + enterData.get(2) + "\n");
     }
 
     public void rewriteClient(ArrayList<String> enterData) throws IOException {
@@ -43,9 +40,9 @@ public class Write {
         }
         bw.close();
 
-        System.out.println("Вітаємо, ваші дані перезаписані. " +
-                "Ваш логін: " + enterData.get(1) + " . Ваш пароль: " + enterData.get(2) + "\n");
     }
+
+    ;
 
     public void password_renewal(ArrayList<String> enterData) throws IOException {
         enterData.set(2, enterData.get(9));
@@ -64,9 +61,6 @@ public class Write {
             bw.newLine();
         }
         bw.close();
-
-        System.out.println("Вітаємо, Ваш пароль оновлено" +
-                "Ваш логін: " + enterData.get(1) + " . Ваш новий пароль: " + enterData.get(2) + "\n");
     }
 
     public void get_info(ArrayList<String> enterData) throws IOException {

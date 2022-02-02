@@ -4,6 +4,7 @@ import Check.Check;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Read {
     private int maxNumberOfrows = 20;

@@ -1,7 +1,9 @@
 package GetInformation;
 
 import Data_registraited_clients.Clients;
+import Data_writing.LogWriter;
 import Data_writing.Write;
+import Exeption.Exept;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,16 +17,23 @@ public class Get_information {
 
     public void get_info(ArrayList<String> enterData) throws IOException {
         Clients client = new Clients();
-        if (client.equals(null) || !client.clients.containsKey(enterData.get(1))) {
-            System.out.println("Клієнта з таким логіном не існує");
-            return;
-        }
-        if (client.clients.get(enterData.get(1)).get(2).equals(enterData.get(2))) {
+
+        try {
+            if (!client.clients.containsKey(enterData.get(1))) {
+                throw new Exept("Помилка отримання даних. Такого користувача не існує");
+            }
+
+            if (!client.clients.get(enterData.get(1)).get(2).equals(enterData.get(2))) {
+                throw new Exept("Помилка оновлення пароля. Такого користувача не існує");
+            }
+
             Write write = new Write();
             write.get_info(enterData);
-            System.out.println("Ваші дані:" + client.clients.get(enterData.get(1)));
-        } else {
-            System.out.println("Ви ввели невірний логін");
+            LogWriter.writeLog("For user " + enterData.get(1) + " Geting information was successful");
+            return;
+        } catch (Exept exept) {
+            exept.printStackTrace();
+            LogWriter.writeLog("For user " + enterData.get(1) + " Geting information was NOT successful");
         }
     }
 }

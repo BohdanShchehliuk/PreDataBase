@@ -1,7 +1,9 @@
 package PasswordRen;
 
 import Data_registraited_clients.Clients;
+import Data_writing.LogWriter;
 import Data_writing.Write;
+import Exeption.Exept;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,16 +17,22 @@ public class Password_renewal {
 
     public boolean password_renewal(ArrayList<String> enterData) throws IOException {
         Clients client = new Clients();
-        int ren_index = 0; // якщо клієнт пройде перевірку і отримає 100 та більше балів, можна відновити/переписати пароль
-        if (client.equals(null) || !client.clients.containsKey(enterData.get(1))) {
-            System.out.println("Клієнта з таким логіном не існує");
-            return false;
-        } else if (client.clients.get(enterData.get(1)).get(2).equals(enterData.get(2))) {
-            ren_index = 100;// якщо клієнт памятає свій пароль, то він одразу може його поміняти/оновити
-        } else if (enterData.size() < 5) {
-            System.out.println("Ви ввели замало даних");
+        try {
+            if (!client.clients.containsKey(enterData.get(1))) {
+                throw new Exept("Помилка оновлення пароля. Такого користувача не існує");
+
+            } else if (enterData.size() < 5) {
+                throw new Exept("Помилка оновлення пароля. Мало даних");
+            }
+
+        } catch (Exept exept) {
+            exept.printStackTrace();
+            LogWriter.writeLog("For user " + enterData.get(1) + "obtain is forbiden");
             return false;
         }
+
+
+        int ren_index = 0; // якщо клієнт пройде перевірку і отримає 100 та більше балів, можна відновити/переписати пароль
         int size_min = enterData.size();
         if (size_min > client.clients.get(enterData.get(1)).size()) {
             size_min = client.clients.get(enterData.get(1)).size();
@@ -37,13 +45,22 @@ public class Password_renewal {
             }
         }
 
-        if (ren_index >= 100 && enterData.get(9).length() > 6 && !passwordChecking(enterData)) {
+        try {
+            if (ren_index < 100 && enterData.get(9).length() < 6 && passwordChecking(enterData)) {
+                throw new Exept("Помилка оновлення пароля");
+
+            }
             Write write = new Write();
             write.password_renewal(enterData);
+            LogWriter.writeLog("For user " + enterData.get(1) + " password_renewal was successful");
             return true;
+        } catch (Exept exept) {
+            exept.printStackTrace();
+            LogWriter.writeLog("For user " + enterData.get(1) + " password_renewal is forbidden");
+            return false;
         }
 
-        return false;
+
     }
 
     boolean passwordChecking(ArrayList<String> enterData) {
