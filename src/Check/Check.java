@@ -41,13 +41,11 @@ public class Check {
                     Get_information get_information = new Get_information(enterData);
                     break;
                 default:
-                    System.out.println("Не правильне слово-команда");
+                    LogWriter.writeLog("For user " + enterData.get(1) + " key word is NOT correct");
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-            LogWriter.writeLog("For user " + enterData.get(1) + " key word is NOT correct");
-        }
-
+           }
     }
 }
